@@ -1,0 +1,12 @@
+.file-uploader {
+  text-align: center;
+  margin: 20px;
+}
+
+button {
+  margin: 10px;
+}
+
+.uploaded-files {
+  margin-top: 20px;
+}

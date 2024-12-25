@@ -1,0 +1,31 @@
+<div class="file-uploader">
+  <h3>File Uploader</h3>
+
+  <!-- Button 1 -->
+  <button (click)="fileInput1.click()">Upload File 1</button>
+  <input
+    #fileInput1
+    type="file"
+    hidden
+    (change)="onFileSelected($event, 1)"
+  />
+
+  <!-- Button 2 -->
+  <button (click)="fileInput2.click()">Upload File 2</button>
+  <input
+    #fileInput2
+    type="file"
+    hidden
+    (change)="onFileSelected($event, 2)"
+  />
+
+  <!-- Display uploaded files -->
+  <div class="uploaded-files">
+    <h4>Uploaded Files</h4>
+    <ul>
+      <li *ngFor="let file of uploadedFiles">
+        {{ file.name }} ({{ file.size }} bytes)
+      </li>
+    </ul>
+  </div>
+</div>
