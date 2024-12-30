@@ -8,6 +8,9 @@ import { HttpClient } from '@angular/common/http';
 })
 export class FileUploaderComponent {
   uploadedFiles: { file: File; base64: string }[] = [];
+  xlsxTexts: string[] = [];
+  pdfTexts: string[] = [];
+  comparisonImageSrc: string = 'https://via.placeholder.com/300';
 
   constructor(private http: HttpClient) {}
 
@@ -17,9 +20,6 @@ export class FileUploaderComponent {
     if (input.files && input.files.length > 0) {
       const selectedFile = input.files[0];
       this.convertFileToBase64(selectedFile).then((base64: string) => {
-        console.log(`Base64 representation of file uploaded via Button ${buttonId}:`, base64);
-
-        // Store the file and its Base64 representation
         this.uploadedFiles[buttonId - 1] = { file: selectedFile, base64 };
       });
     }
@@ -30,13 +30,8 @@ export class FileUploaderComponent {
       const reader = new FileReader();
       reader.readAsDataURL(file);
 
-      reader.onload = () => {
-        resolve(reader.result as string);
-      };
-
-      reader.onerror = (error) => {
-        reject(error);
-      };
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
     });
   }
 
@@ -51,18 +46,28 @@ export class FileUploaderComponent {
       xlsx_base64: this.uploadedFiles[1]?.base64 || '',
     };
 
-    // Send POST request
-    this.http
-      .post('http://localhost:8000/compare-documents-base64', requestBody)
-      .subscribe({
-        next: (response) => {
-          console.log('Comparison result:', response);
-          alert('Comparison successful!');
-        },
-        error: (err) => {
-          console.error('Error comparing files:', err);
-          alert('Comparison failed. Please try again.');
-        },
-      });
+    this.http.post('http://localhost:8000/compare-documents-base64', requestBody).subscribe({
+      next: (response) => {
+        console.log('Comparison result:', response);
+        alert('Comparison successful!');
+      },
+      error: (err) => {
+        console.error('Error comparing files:', err);
+
+        // Load fallback data from the .txt file
+        this.http.get('assets/data/response.txt', { responseType: 'text' }).subscribe({
+          next: (data) => {
+            const parsedData = JSON.parse(data);
+            this.xlsxTexts = parsedData.differences.differences.map((item: any) => item.xlsx_text);
+            this.pdfTexts = parsedData.differences.differences.map((item: any) => item.pdf_text);
+            this.comparisonImageSrc = `data:image/png;base64,${parsedData?.encoded_image || ''}`;
+          },
+          error: (fileErr) => {
+            console.error('Error loading .txt file:', fileErr);
+          },
+        });
+        alert('Comparison failed. Using fallback data.');
+      },
+    });
   }
 }
