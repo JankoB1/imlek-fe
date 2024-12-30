@@ -1,31 +1,84 @@
-<div class="file-uploader">
-  <h3>File Uploader</h3>
+<div class="file-uploader p-6 bg-gray-100 rounded-lg shadow-md max-w-4xl mx-auto">
+  <h3 class="text-2xl font-semibold text-center mb-6">File Uploader</h3>
 
-  <!-- Button 1 -->
-  <button (click)="fileInput1.click()">Upload File 1</button>
-  <input
-    #fileInput1
-    type="file"
-    hidden
-    (change)="onFileSelected($event, 1)"
-  />
+  <!-- Upload Section -->
+  <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-8">
+    <!-- Button 1 -->
+    <div class="flex flex-col items-center space-y-2">
+      <button
+        class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded shadow-md"
+        (click)="fileInput1.click()"
+      >
+        Upload File 1
+      </button>
+      <input
+        #fileInput1
+        type="file"
+        hidden
+        (change)="onFileSelected($event, 1)"
+      />
+      <span class="text-sm text-gray-600">Upload a document</span>
+    </div>
 
-  <!-- Button 2 -->
-  <button (click)="fileInput2.click()">Upload File 2</button>
-  <input
-    #fileInput2
-    type="file"
-    hidden
-    (change)="onFileSelected($event, 2)"
-  />
-
-  <!-- Display uploaded files -->
-  <div class="uploaded-files">
-    <h4>Uploaded Files</h4>
-    <ul>
-      <li *ngFor="let file of uploadedFiles">
-        {{ file.name }} ({{ file.size }} bytes)
-      </li>
-    </ul>
+    <!-- Button 2 -->
+    <div class="flex flex-col items-center space-y-2">
+      <button
+        class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded shadow-md"
+        (click)="fileInput2.click()"
+      >
+        Upload File 2
+      </button>
+      <input
+        #fileInput2
+        type="file"
+        hidden
+        (change)="onFileSelected($event, 2)"
+      />
+      <span class="text-sm text-gray-600">Upload a document</span>
+    </div>
   </div>
 </div>
+
+<div class="text-comparator p-6 bg-gray-50 rounded-lg shadow-md max-w-4xl mx-auto">
+  <h3 class="text-2xl font-semibold text-center mb-6">Text Comparator</h3>
+
+  <!-- Lists Container -->
+  <div class="grid grid-cols-2 gap-4">
+    <!-- First List -->
+    <div>
+      <h4 class="text-lg font-semibold text-gray-800 mb-2">List 1</h4>
+      <ul class="space-y-2">
+        <li class="p-2 bg-green-100 text-green-800 rounded">Sentence 1 from List 1</li>
+        <li class="p-2 bg-red-100 text-red-800 rounded">Sentence 2 from List 1</li>
+        <li class="p-2 bg-green-100 text-green-800 rounded">Sentence 3 from List 1</li>
+      </ul>
+    </div>
+
+    <!-- Second List -->
+    <div>
+      <h4 class="text-lg font-semibold text-gray-800 mb-2">List 2</h4>
+      <ul class="space-y-2">
+        <li class="p-2 bg-green-100 text-green-800 rounded">Sentence 1 from List 2</li>
+        <li class="p-2 bg-red-100 text-red-800 rounded">Sentence 2 from List 2</li>
+        <li class="p-2 bg-green-100 text-green-800 rounded">Sentence 3 from List 2</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Image and Download Button -->
+  <div class="image-section mt-8 text-center">
+    <img
+      src="https://via.placeholder.com/300"
+      alt="Comparison Image"
+      class="w-full max-w-md mx-auto rounded-lg shadow-lg"
+    />
+    <a
+      href="https://via.placeholder.com/300"
+      download="Comparison-Image.png"
+      class="mt-4 inline-block bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600 shadow-md"
+    >
+      Download Image
+    </a>
+  </div>
+</div>
+
