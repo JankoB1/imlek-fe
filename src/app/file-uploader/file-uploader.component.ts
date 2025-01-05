@@ -139,7 +139,7 @@ export class FileUploaderComponent {
 
     const requestBody = {
       pdf_base64: this.uploadedFiles[2]?.base64 || '',
-      pdf_base642: this.uploadedFiles[3]?.base64 || '',
+      pdf_base64_2: this.uploadedFiles[3]?.base64 || '',
     };
 
     this.http.post('http://localhost:8000/api/v1/compare-documents-base64-pdf', requestBody).subscribe({
