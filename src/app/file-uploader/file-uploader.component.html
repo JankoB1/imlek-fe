@@ -1,5 +1,25 @@
+<div class="tab-container max-w-4xl mx-auto">
+  <!-- Tab Headers -->
+  <div class="tab-header flex justify-around bg-gray-200 rounded-t-lg shadow-md">
+    <div
+      class="tab-item py-2 px-4 cursor-pointer"
+      [class.active]="selectedTab === 'section1'"
+      (click)="selectTab('section1')"
+    >
+      PDF - XLSX
+    </div>
+    <div
+      class="tab-item py-2 px-4 cursor-pointer"
+      [class.active]="selectedTab === 'section2'"
+      (click)="selectTab('section2')"
+    >
+      PDF - PDF
+    </div>
+  </div>
+
+  <div *ngIf="selectedTab === 'section1'" class="tab-content bg-white p-6 rounded-b-lg shadow-md">
 <div class="file-uploader p-6 bg-gray-100 rounded-lg shadow-md max-w-4xl mx-auto">
-  <h3 class="text-2xl font-semibold text-center mb-6">File Uploader</h3>
+  <h3 class="text-2xl font-semibold text-center mb-6">File Uploader PDF - XLSX</h3>
 
   <!-- Upload Section -->
   <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-8">
@@ -92,4 +112,103 @@
     </a>
   </div>
 </div>
+</div>
 
+  <div *ngIf="selectedTab === 'section2'" class="tab-content bg-white p-6 rounded-b-lg shadow-md">
+<div class="file-uploader p-6 bg-gray-100 rounded-lg shadow-md max-w-4xl mx-auto">
+  <h3 class="text-2xl font-semibold text-center mb-6">File Uploader PDF - PDF</h3>
+
+  <!-- Upload Section -->
+  <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-8">
+    <!-- Button 1 -->
+    <div class="flex flex-col items-center space-y-2">
+      <button
+        class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded shadow-md"
+        (click)="fileInput3.click()"
+      >
+        Upload File 1
+      </button>
+      <input
+        #fileInput3
+        type="file"
+        hidden
+        (change)="onFileSelected($event, 3)"
+      />
+      <span class="text-sm text-gray-600">Upload a document</span>
+    </div>
+
+    <!-- Compare Button -->
+    <div class="flex flex-col items-center">
+      <button
+        class="bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-6 rounded shadow-md"
+        (click)="onCompareFiles2()"
+      >
+        Compare
+      </button>
+    </div>
+
+    <!-- Button 2 -->
+    <div class="flex flex-col items-center space-y-2">
+      <button
+        class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded shadow-md"
+        (click)="fileInput4.click()"
+      >
+        Upload File 2
+      </button>
+      <input
+        #fileInput4
+        type="file"
+        hidden
+        (change)="onFileSelected($event, 4)"
+      />
+      <span class="text-sm text-gray-600">Upload a document</span>
+    </div>
+  </div>
+</div>
+
+
+<div class="text-comparator p-6 bg-gray-50 rounded-lg shadow-md max-w-4xl mx-auto">
+  <h3 class="text-2xl font-semibold text-center mb-6">Text Comparator</h3>
+
+
+  <div class="space-y-2">
+    <!-- Combined List -->
+    <div
+      *ngFor="let pdfText of pdfTexts2; let i = index"
+      class="grid grid-cols-2 items-center gap-4 p-2 bg-white rounded shadow-sm"
+    >
+      <!-- XLSX Text -->
+      <div class="p-2 bg-green-100 text-green-800 rounded">
+        {{ pdfText }}
+      </div>
+
+      <!-- PDF Text -->
+      <div
+        class="p-2 bg-red-100 text-red-800 rounded"
+      >
+        {{ pdfTexts3[i] || '' }}
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Image and Download Button -->
+  <div class="image-section mt-8 text-center">
+    <img
+      [src]="comparisonImageSrc2"
+      alt="Comparison Image"
+      class="w-full max-w-md mx-auto rounded-lg shadow-lg"
+    />
+    <a
+      [href]="comparisonImageSrc2"
+      download="Comparison-Image.png"
+      class="mt-4 inline-block bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600 shadow-md"
+    >
+      Download Image
+    </a>
+  </div>
+</div>
+    </div>
+
+</div>
