@@ -1,15 +1,12 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { FileUploaderComponent } from "./file-uploader/file-uploader.component";
-import {AppModule} from "./app.module";
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, AppModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'],
+  standalone: true,
+  imports: [RouterModule, CommonModule]
 })
-export class AppComponent {
-  title = 'imlek-fe';
-}
+export class AppComponent { }

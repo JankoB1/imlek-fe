@@ -1,214 +1,56 @@
-<div class="tab-container max-w-4xl mx-auto">
-  <!-- Tab Headers -->
-  <div class="tab-header flex justify-around bg-gray-200 rounded-t-lg shadow-md">
-    <div
-      class="tab-item py-2 px-4 cursor-pointer"
-      [class.active]="selectedTab === 'section1'"
-      (click)="selectTab('section1')"
-    >
-      PDF - XLSX
-    </div>
-    <div
-      class="tab-item py-2 px-4 cursor-pointer"
-      [class.active]="selectedTab === 'section2'"
-      (click)="selectTab('section2')"
-    >
-      PDF - PDF
-    </div>
-  </div>
-
-  <div *ngIf="selectedTab === 'section1'" class="tab-content bg-white p-6 rounded-b-lg shadow-md">
-<div class="file-uploader p-6 bg-gray-100 rounded-lg shadow-md max-w-4xl mx-auto">
-  <h3 class="text-2xl font-semibold text-center mb-6">File Uploader PDF - XLSX</h3>
-
-  <!-- Upload Section -->
-  <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-8">
-    <!-- Button 1 -->
-    <div class="flex flex-col items-center space-y-2">
-      <button
-        class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded shadow-md"
-        (click)="fileInput1.click()"
-      >
-        Upload File 1
-      </button>
-      <input
-        #fileInput1
-        type="file"
-        hidden
-        (change)="onFileSelected($event, 1)"
-      />
-      <span class="text-sm text-gray-600">Upload a document</span>
-    </div>
-
-    <!-- Compare Button -->
-    <div class="flex flex-col items-center">
-      <button
-        class="bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-6 rounded shadow-md"
-        (click)="onCompareFiles()"
-      >
-        Compare
-      </button>
-    </div>
-
-    <!-- Button 2 -->
-    <div class="flex flex-col items-center space-y-2">
-      <button
-        class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded shadow-md"
-        (click)="fileInput2.click()"
-      >
-        Upload File 2
-      </button>
-      <input
-        #fileInput2
-        type="file"
-        hidden
-        (change)="onFileSelected($event, 2)"
-      />
-      <span class="text-sm text-gray-600">Upload a document</span>
-    </div>
-  </div>
-</div>
-
-
-<div class="text-comparator p-6 bg-gray-50 rounded-lg shadow-md max-w-4xl mx-auto">
-  <h3 class="text-2xl font-semibold text-center mb-6">Text Comparator</h3>
-
-
-  <div class="space-y-2">
-    <!-- Combined List -->
-    <div
-      *ngFor="let xlsxText of xlsxTexts; let i = index"
-      class="grid grid-cols-2 items-center gap-4 p-2 bg-white rounded shadow-sm"
-    >
-      <!-- XLSX Text -->
-      <div class="p-2 bg-green-100 text-green-800 rounded">
-        {{ xlsxText }}
+<div class="container mx-auto p-4">
+  <div class="mb-8">
+    <h2 class="text-2xl font-bold mb-4">Compare PDF and XLSX</h2>
+    <div class="space-y-4">
+      <div>
+        <label class="block mb-2">Select PDF File:</label>
+        <input type="file" (change)="onPdfFileSelected($event)" accept=".pdf" class="border p-2">
       </div>
-
-      <!-- PDF Text -->
-      <div
-        class="p-2 bg-red-100 text-red-800 rounded"
-      >
-        {{ pdfTexts[i] || '' }}
+      <div>
+        <label class="block mb-2">Select XLSX File:</label>
+        <input type="file" (change)="onXlsxFileSelected($event)" accept=".xlsx" class="border p-2">
       </div>
-    </div>
-  </div>
-
-
-
-  <!-- Image and Download Button -->
-  <div class="image-section mt-8 text-center">
-    <img
-      [src]="comparisonImageSrc"
-      alt="Comparison Image"
-      class="w-full max-w-md mx-auto rounded-lg shadow-lg"
-    />
-    <a
-      [href]="comparisonImageSrc"
-      download="Comparison-Image.png"
-      class="mt-4 inline-block bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600 shadow-md"
-    >
-      Download Image
-    </a>
-  </div>
-</div>
-</div>
-
-  <div *ngIf="selectedTab === 'section2'" class="tab-content bg-white p-6 rounded-b-lg shadow-md">
-<div class="file-uploader p-6 bg-gray-100 rounded-lg shadow-md max-w-4xl mx-auto">
-  <h3 class="text-2xl font-semibold text-center mb-6">File Uploader PDF - PDF</h3>
-
-  <!-- Upload Section -->
-  <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-8">
-    <!-- Button 1 -->
-    <div class="flex flex-col items-center space-y-2">
-      <button
-        class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded shadow-md"
-        (click)="fileInput3.click()"
-      >
-        Upload File 1
-      </button>
-      <input
-        #fileInput3
-        type="file"
-        hidden
-        (change)="onFileSelected($event, 3)"
-      />
-      <span class="text-sm text-gray-600">Upload a document</span>
-    </div>
-
-    <!-- Compare Button -->
-    <div class="flex flex-col items-center">
-      <button
-        class="bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-6 rounded shadow-md"
-        (click)="onCompareFiles2()"
-      >
-        Compare
+      <button (click)="compareXlsxPdf()" 
+              [disabled]="!selectedPdfFile || !selectedXlsxFile || loading"
+              class="bg-blue-500 text-white px-4 py-2 rounded disabled:bg-gray-400">
+        Compare PDF and XLSX
       </button>
     </div>
+  </div>
 
-    <!-- Button 2 -->
-    <div class="flex flex-col items-center space-y-2">
-      <button
-        class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded shadow-md"
-        (click)="fileInput4.click()"
-      >
-        Upload File 2
+  <div class="mb-8">
+    <h2 class="text-2xl font-bold mb-4">Compare Two PDFs</h2>
+    <div class="space-y-4">
+      <div>
+        <label class="block mb-2">Select First PDF:</label>
+        <input type="file" (change)="onPdfFileSelected($event)" accept=".pdf" class="border p-2">
+      </div>
+      <div>
+        <label class="block mb-2">Select Second PDF:</label>
+        <input type="file" (change)="onPdfFile2Selected($event)" accept=".pdf" class="border p-2">
+      </div>
+      <button (click)="comparePdfPdf()" 
+              [disabled]="!selectedPdfFile || !selectedPdfFile2 || loading"
+              class="bg-blue-500 text-white px-4 py-2 rounded disabled:bg-gray-400">
+        Compare PDFs
       </button>
-      <input
-        #fileInput4
-        type="file"
-        hidden
-        (change)="onFileSelected($event, 4)"
-      />
-      <span class="text-sm text-gray-600">Upload a document</span>
-    </div>
-  </div>
-</div>
-
-
-<div class="text-comparator p-6 bg-gray-50 rounded-lg shadow-md max-w-4xl mx-auto">
-  <h3 class="text-2xl font-semibold text-center mb-6">Text Comparator</h3>
-
-
-  <div class="space-y-2">
-    <!-- Combined List -->
-    <div
-      *ngFor="let pdfText of pdfTexts2; let i = index"
-      class="grid grid-cols-2 items-center gap-4 p-2 bg-white rounded shadow-sm"
-    >
-      <!-- XLSX Text -->
-      <div class="p-2 bg-green-100 text-green-800 rounded">
-        {{ pdfText }}
-      </div>
-
-      <!-- PDF Text -->
-      <div
-        class="p-2 bg-red-100 text-red-800 rounded"
-      >
-        {{ pdfTexts3[i] || '' }}
-      </div>
     </div>
   </div>
 
-
-
-  <!-- Image and Download Button -->
-  <div class="image-section mt-8 text-center">
-    <img
-      [src]="comparisonImageSrc2"
-      alt="Comparison Image"
-      class="w-full max-w-md mx-auto rounded-lg shadow-lg"
-    />
-    <a
-      [href]="comparisonImageSrc2"
-      download="Comparison-Image.png"
-      class="mt-4 inline-block bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600 shadow-md"
-    >
-      Download Image
-    </a>
+  <div *ngIf="errorMessage" class="text-red-500 mt-4">
+    {{ errorMessage }}
   </div>
-</div>
-    </div>
 
+  <div *ngIf="loading" class="mt-4">
+    Loading...
+  </div>
+
+  <div *ngIf="comparisonResult" class="mt-4">
+    <h3 class="text-xl font-bold mb-2">Comparison Results:</h3>
+    <pre class="bg-gray-100 p-4 rounded">{{ comparisonResult | json }}</pre>
+    <img *ngIf="comparisonResult.encoded_image" 
+         [src]="'data:image/png;base64,' + comparisonResult.encoded_image" 
+         alt="Comparison visualization"
+         class="mt-4 max-w-full">
+  </div>
 </div>
