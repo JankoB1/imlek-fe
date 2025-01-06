@@ -1,56 +1,81 @@
-<div class="container mx-auto p-4">
-  <div class="mb-8">
-    <h2 class="text-2xl font-bold mb-4">Compare PDF and XLSX</h2>
-    <div class="space-y-4">
-      <div>
-        <label class="block mb-2">Select PDF File:</label>
-        <input type="file" (change)="onPdfFileSelected($event)" accept=".pdf" class="border p-2">
+<div class="container mx-auto p-4 flex items-center justify-center">
+  <div class="bg-white shadow-md rounded-lg p-8 w-full max-w-4xl">
+    <h2 class="text-2xl font-bold text-center mb-8">File Comparison Tool</h2>
+
+    <!-- Compare PDF and XLSX Section -->
+    <div class="mb-12">
+      <h2 class="text-xl font-semibold mb-6 text-center">Compare PDF and XLSX</h2>
+      <div class="flex justify-between items-center">
+        <!-- Left: PDF Upload -->
+        <div class="w-1/3">
+          <label class="block mb-2 font-medium">Select PDF File:</label>
+          <input type="file" (change)="onPdfFileSelected($event)" accept=".pdf" class="border p-2 w-full">
+        </div>
+
+        <!-- Right: XLSX Upload -->
+        <div class="w-1/3">
+          <label class="block mb-2 font-medium">Select XLSX File:</label>
+          <input type="file" (change)="onXlsxFileSelected($event)" accept=".xlsx" class="border p-2 w-full">
+        </div>
       </div>
-      <div>
-        <label class="block mb-2">Select XLSX File:</label>
-        <input type="file" (change)="onXlsxFileSelected($event)" accept=".xlsx" class="border p-2">
+
+      <!-- Compare Button -->
+      <div class="text-center mt-6">
+        <button (click)="compareXlsxPdf()"
+                [disabled]="!selectedPdfFile || !selectedXlsxFile || loading"
+                class="bg-blue-500 text-white px-6 py-3 rounded disabled:bg-gray-400">
+          Compare PDF and XLSX
+        </button>
       </div>
-      <button (click)="compareXlsxPdf()" 
-              [disabled]="!selectedPdfFile || !selectedXlsxFile || loading"
-              class="bg-blue-500 text-white px-4 py-2 rounded disabled:bg-gray-400">
-        Compare PDF and XLSX
-      </button>
     </div>
-  </div>
 
-  <div class="mb-8">
-    <h2 class="text-2xl font-bold mb-4">Compare Two PDFs</h2>
-    <div class="space-y-4">
-      <div>
-        <label class="block mb-2">Select First PDF:</label>
-        <input type="file" (change)="onPdfFileSelected($event)" accept=".pdf" class="border p-2">
+    <!-- Compare Two PDFs Section -->
+    <div class="mb-12">
+      <h2 class="text-xl font-semibold mb-6 text-center">Compare Two PDFs</h2>
+      <div class="flex justify-between items-center">
+        <!-- Left: First PDF Upload -->
+        <div class="w-1/3">
+          <label class="block mb-2 font-medium">Select First PDF:</label>
+          <input type="file" (change)="onPdfFileSelected($event)" accept=".pdf" class="border p-2 w-full">
+        </div>
+
+        <!-- Right: Second PDF Upload -->
+        <div class="w-1/3">
+          <label class="block mb-2 font-medium">Select Second PDF:</label>
+          <input type="file" (change)="onPdfFile2Selected($event)" accept=".pdf" class="border p-2 w-full">
+        </div>
       </div>
-      <div>
-        <label class="block mb-2">Select Second PDF:</label>
-        <input type="file" (change)="onPdfFile2Selected($event)" accept=".pdf" class="border p-2">
+
+      <!-- Compare Button -->
+      <div class="text-center mt-6">
+        <button (click)="comparePdfPdf()"
+                [disabled]="!selectedPdfFile || !selectedPdfFile2 || loading"
+                class="bg-blue-500 text-white px-6 py-3 rounded disabled:bg-gray-400">
+          Compare PDFs
+        </button>
       </div>
-      <button (click)="comparePdfPdf()" 
-              [disabled]="!selectedPdfFile || !selectedPdfFile2 || loading"
-              class="bg-blue-500 text-white px-4 py-2 rounded disabled:bg-gray-400">
-        Compare PDFs
-      </button>
     </div>
-  </div>
 
-  <div *ngIf="errorMessage" class="text-red-500 mt-4">
-    {{ errorMessage }}
-  </div>
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="text-red-500 text-center mt-4">
+      {{ errorMessage }}
+    </div>
 
-  <div *ngIf="loading" class="mt-4">
-    Loading...
-  </div>
+    <!-- Loading Indicator -->
+    <div *ngIf="loading" class="text-center mt-4">
+      Loading...
+    </div>
 
-  <div *ngIf="comparisonResult" class="mt-4">
-    <h3 class="text-xl font-bold mb-2">Comparison Results:</h3>
-    <pre class="bg-gray-100 p-4 rounded">{{ comparisonResult | json }}</pre>
-    <img *ngIf="comparisonResult.encoded_image" 
-         [src]="'data:image/png;base64,' + comparisonResult.encoded_image" 
-         alt="Comparison visualization"
-         class="mt-4 max-w-full">
+    <!-- Comparison Result -->
+    <div *ngIf="comparisonResult" class="mt-8">
+      <h3 class="text-xl font-bold mb-4 text-center">Comparison Results:</h3>
+      <pre class="bg-gray-100 p-4 rounded text-sm overflow-auto">{{ comparisonResult | json }}</pre>
+      <div class="flex justify-center mt-4">
+        <img *ngIf="comparisonResult.encoded_image"
+             [src]="'data:image/png;base64,' + comparisonResult.encoded_image"
+             alt="Comparison visualization"
+             class="max-w-full rounded-lg shadow-md">
+      </div>
+    </div>
   </div>
 </div>

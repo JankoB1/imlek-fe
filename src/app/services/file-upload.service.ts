@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class FileUploadService {
-  private baseUrl = 'http://localhost:8000/api'; // Adjust this to your FastAPI server URL
+  private baseUrl = 'https://imlek-package-validator-billowing-pine-3420.fly.dev/api'; // Adjust this to your FastAPI server URL
 
   constructor(private http: HttpClient) { }
 
@@ -25,4 +25,4 @@ export class FileUploadService {
 
     return this.http.post(`${this.baseUrl}/compare-pdf-pdf`, formData);
   }
-} 
+}
