@@ -11,6 +11,7 @@ import { FileUploadService } from '../services/file-upload.service';
   providers: [FileUploadService]
 })
 export class FileUploaderComponent {
+  activeTab: string = 'pdfXlsx';
   selectedPdfFile: File | null = null;
   selectedXlsxFile: File | null = null;
   selectedPdfFile2: File | null = null;
