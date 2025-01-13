@@ -1,6 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FileUploadService } from '../services/file-upload.service';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+
+pdfMake.vfs = pdfFonts.vfs;
 
 @Component({
   selector: 'app-file-uploader',
@@ -15,7 +19,10 @@ export class FileUploaderComponent {
   selectedPdfFile: File | null = null;
   selectedXlsxFile: File | null = null;
   selectedPdfFile2: File | null = null;
-  comparisonResult: any = null;
+  comparisonResult: { differences: { xlsx_text: string; pdf_text: string; explanation: string }[], encoded_image: string } = {
+    differences: [],
+    encoded_image: ''
+  };
   errorMessage: string = '';
   loading: boolean = false;
 
@@ -87,5 +94,63 @@ export class FileUploaderComponent {
     } else {
       this.errorMessage = 'Please select both PDF files';
     }
+  }
+
+  generatePdf() {
+    // if (!this.comparisonResult || !this.comparisonResult.differences.length) {
+    //   return;
+    // }
+
+    // Define table body
+    const tableBody = [
+      ['XLSX Text', 'PDF Text', 'Explanation'], // Table header
+      ...this.comparisonResult.differences.map(difference => [
+        difference.xlsx_text,
+        difference.pdf_text,
+        difference.explanation
+      ])
+    ];
+
+    // Define PDF document structure
+    const documentDefinition = {
+      content: [
+        { text: 'Comparison Results', style: 'header' },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['*', '*', '*'], // Flexible column widths
+            body: [
+              ['XLSX Text', 'PDF Text', 'Explanation'], // Table headers
+              ...this.comparisonResult.differences.map((difference: any) => [
+                difference.xlsx_text,
+                difference.pdf_text,
+                difference.explanation,
+              ]),
+            ],
+          },
+        },
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          margin: [0, 0, 0, 10], // Top, Right, Bottom, Left (4 elements)
+        },
+        subheader: {
+          fontSize: 14,
+          italics: true,
+          margin: [0, 10, 0, 5], // Top, Right, Bottom, Left (4 elements)
+        },
+        tableHeader: {
+          bold: true,
+          fontSize: 12,
+          color: 'black',
+          margin: [5, 5, 5, 5], // Top, Right, Bottom, Left (4 elements)
+        },
+      },
+    };
+
+    pdfMake.createPdf(documentDefinition as any).download('comparison_results.pdf');
+
+
   }
 }
