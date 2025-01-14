@@ -131,12 +131,6 @@ export class FileUploaderComponent {
                 difference.pdf_text,
                 difference.explanation,
               ]),
-              ['XLSX Symbol', 'PDF Symbol', 'Explanation'], // Table headers
-              ...this.comparisonResult.symbols_differences.map((symbols_differences: any) => [
-                symbols_differences.xlsx_symbol,
-                symbols_differences.pdf_symbol,
-                symbols_differences.explanation,
-              ])
             ],
           },
         },

@@ -135,7 +135,7 @@
             </div>
           </div>
 
-          <div *ngIf="comparisonResult?.symbols_differences && comparisonResult.symbols_differences.length > 0">
+          <div *ngIf="comparisonResult?.symbols_differences && comparisonResult.symbols_differences.length > 0 && !selectedXlsxFile">
             <h2 class="text-2xl font-bold mb-4 mt-4">Symbols</h2>
             <div *ngFor="let difference of comparisonResult.symbols_differences" class="flex w-full space-x-4 items-start">
               <!-- Left Column (xlsx_text) -->
