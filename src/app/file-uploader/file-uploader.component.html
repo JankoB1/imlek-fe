@@ -135,6 +135,36 @@
             </div>
           </div>
 
+          <div *ngIf="comparisonResult?.symbols_differences && comparisonResult.symbols_differences.length > 0">
+            <h2 class="text-2xl font-bold mb-4 mt-4">Symbols</h2>
+            <div *ngFor="let difference of comparisonResult.symbols_differences" class="flex w-full space-x-4 items-start">
+              <!-- Left Column (xlsx_text) -->
+              <div class="bg-green-100 text-green-900 p-4 rounded w-1/2 border border-green-300 mb-2">
+                <p class="whitespace-pre-wrap">{{ difference.xlsx_symbol }}</p>
+              </div>
+
+              <!-- Right Column (pdf_text) -->
+              <div class="bg-red-100 text-red-900 p-4 rounded w-1/2 border border-red-300 mb-2">
+                <p class="whitespace-pre-wrap">{{ difference.pdf_symbol }}</p>
+              </div>
+
+              <!-- Info Icon Column -->
+              <div class="flex items-center w-12 justify-center">
+                <div class="relative group">
+                  <!-- Info Icon -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M18 10c0 4.418-3.582 8-8 8s-8-3.582-8-8 3.582-8 8-8 8 3.582 8 8zM9 7a1 1 0 102 0 1 1 0 00-2 0zm1 2a1 1 0 00-.993.883L9 10v4a1 1 0 001.993.117L11 14v-4a1 1 0 00-1-1z" clip-rule="evenodd" />
+                  </svg>
+
+                  <!-- Tooltip -->
+                  <div class="absolute hidden group-hover:block bg-gray-700 text-white text-sm rounded px-3 py-2 w-64 z-10 shadow-lg">
+                    {{ difference.explanation }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Download Text Output Button -->
           <button (click)="generatePdf()"
                   [disabled]="!comparisonResult || !comparisonResult.differences.length"

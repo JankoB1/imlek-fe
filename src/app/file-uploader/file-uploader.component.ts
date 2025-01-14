@@ -19,9 +19,14 @@ export class FileUploaderComponent {
   selectedPdfFile: File | null = null;
   selectedXlsxFile: File | null = null;
   selectedPdfFile2: File | null = null;
-  comparisonResult: { differences: { xlsx_text: string; pdf_text: string; explanation: string }[], encoded_image: string } = {
+  comparisonResult: {
+    differences: { xlsx_text: string; pdf_text: string; explanation: string }[],
+    encoded_image: string,
+    symbols_differences: { xlsx_symbol: string; pdf_symbol: string; explanation: string }[],
+  } = {
     differences: [],
-    encoded_image: ''
+    encoded_image: '',
+    symbols_differences: []
   };
   errorMessage: string = '';
   loading: boolean = false;
@@ -126,6 +131,12 @@ export class FileUploaderComponent {
                 difference.pdf_text,
                 difference.explanation,
               ]),
+              ['XLSX Symbol', 'PDF Symbol', 'Explanation'], // Table headers
+              ...this.comparisonResult.symbols_differences.map((symbols_differences: any) => [
+                symbols_differences.xlsx_symbol,
+                symbols_differences.pdf_symbol,
+                symbols_differences.explanation,
+              ])
             ],
           },
         },
