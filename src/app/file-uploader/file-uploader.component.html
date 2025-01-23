@@ -1,7 +1,5 @@
 <div class="container mx-auto p-4 flex items-center justify-center">
   <div class="bg-white shadow-md rounded-lg p-8 w-full max-w-4xl">
-    <h2 class="text-2xl font-bold text-center mb-8">Comparing files</h2>
-
     <div class="container mx-auto p-6">
       <!-- Tab Buttons -->
       <div class="flex justify-center mb-8">
@@ -10,7 +8,7 @@
                 [class.text-white]="activeTab === 'pdfXlsx'"
                 [class.bg-gray-300]="activeTab !== 'pdfXlsx'"
                 class="px-6 py-2 rounded-l border border-gray-300">
-          PDF & XLSX
+          XLSX & PDF
         </button>
         <button (click)="activeTab = 'twoPdfs'"
                 [class.bg-blue-500]="activeTab === 'twoPdfs'"
@@ -25,18 +23,16 @@
       <div>
         <!-- Tab 1: Compare PDF and XLSX -->
         <div *ngIf="activeTab === 'pdfXlsx'" class="mb-12">
-          <h2 class="text-xl font-semibold mb-6 text-center">PDF & XLSX</h2>
+          <h2 class="text-xl font-semibold mb-6 text-center">XLSX & PDF</h2>
           <div class="flex justify-between items-center">
-            <!-- Left: PDF Upload -->
             <div class="w-1/3">
-              <label class="block mb-2 font-medium">PDF:</label>
-              <input type="file" (change)="onPdfFileSelected($event)" accept=".pdf" class="border p-2 w-full">
+              <label class="block mb-2 font-medium">XLSX Referent File:</label>
+              <input type="file" (change)="onXlsxFileSelected($event)" accept=".xlsx" class="border p-2 w-full">
             </div>
 
-            <!-- Right: XLSX Upload -->
             <div class="w-1/3">
-              <label class="block mb-2 font-medium">XLSX:</label>
-              <input type="file" (change)="onXlsxFileSelected($event)" accept=".xlsx" class="border p-2 w-full">
+              <label class="block mb-2 font-medium">PDF Comparing Design File:</label>
+              <input type="file" (change)="onPdfFileSelected($event)" accept=".pdf" class="border p-2 w-full">
             </div>
           </div>
 
@@ -60,13 +56,13 @@
           <div class="flex justify-between items-center">
             <!-- Left: First PDF Upload -->
             <div class="w-1/3">
-              <label class="block mb-2 font-medium">PDF:</label>
+              <label class="block mb-2 font-medium">PDF Referent File:</label>
               <input type="file" (change)="onPdfFileSelected($event)" accept=".pdf" class="border p-2 w-full">
             </div>
 
             <!-- Right: Second PDF Upload -->
             <div class="w-1/3">
-              <label class="block mb-2 font-medium">PDF:</label>
+              <label class="block mb-2 font-medium">PDF Comparing Design File:</label>
               <input type="file" (change)="onPdfFile2Selected($event)" accept=".pdf" class="border p-2 w-full">
             </div>
           </div>
@@ -108,17 +104,17 @@
       <div class="flex flex-col items-center space-y-4">
         <h2 class="text-2xl font-bold mb-4">Result</h2>
         <div *ngIf="comparisonResult?.differences && comparisonResult.differences.length > 0">
-          <h2 class="text-2xl text-center font-bold mb-4 mt-6">Razlike</h2>
+          <h2 class="text-2xl text-center font-bold mb-4 mt-6">Differences</h2>
           <div *ngFor="let difference of comparisonResult.differences">
-            <div *ngIf="difference.xlsx_text !== '' && difference.pdf_text !== ''" class="flex w-full space-x-4 items-start">
+            <div *ngIf="difference.xlsx_text.trim() !== '' && difference.pdf_text.trim() !== '' && difference.xlsx_text.trim() !== difference.pdf_text.trim()" class="flex w-full space-x-4 items-start">
               <!-- Left Column (xlsx_text) -->
               <div class="bg-green-100 text-green-900 p-4 rounded w-1/2 border border-green-300 mb-2">
-                <p class="whitespace-pre-wrap">{{ difference.xlsx_text }}</p>
+                <p class="whitespace-pre-wrap">{{ difference.xlsx_text.trim() }}</p>
               </div>
 
               <!-- Right Column (pdf_text) -->
               <div class="bg-red-100 text-red-900 p-4 rounded w-1/2 border border-red-300 mb-2">
-                <p class="whitespace-pre-wrap">{{ difference.pdf_text }}</p>
+                <p class="whitespace-pre-wrap">{{ difference.pdf_text.trim() }}</p>
               </div>
 
               <!-- Info Icon Column -->
@@ -138,21 +134,21 @@
             </div>
           </div>
 
-          <h2 class="text-2xl text-center font-bold mb-4 mt-6">Manjak</h2>
+          <h2 class="text-2xl text-center font-bold mb-4 mt-6">Referent file contains</h2>
           <div *ngFor="let difference of comparisonResult.differences">
-            <div *ngIf="difference.xlsx_text !== '' && difference.pdf_text === ''" class="flex w-full space-x-4 items-start">
+            <div *ngIf="difference.xlsx_text.trim() !== '' && difference.pdf_text.trim() === ''" class="flex w-full space-x-4 items-start">
               <!-- Left Column (xlsx_text) -->
               <div class="bg-green-100 text-green-900 p-4 rounded w-1/2 border border-green-300 mb-2">
-                <p class="whitespace-pre-wrap">{{ difference.xlsx_text }}</p>
+                <p class="whitespace-pre-wrap">{{ difference.xlsx_text.trim() }}</p>
               </div>
 
               <!-- Right Column (pdf_text) -->
               <div class="bg-red-100 text-red-900 p-4 rounded w-1/2 border border-red-300 mb-2">
-                <p class="whitespace-pre-wrap">{{ difference.pdf_text }}</p>
+                <p class="whitespace-pre-wrap">{{ difference.pdf_text.trim() }}</p>
               </div>
 
               <!-- Info Icon Column -->
-              <div class="flex items-center w-12 justify-center">
+              <div class="flex items-center w-12 justify-center" style="width: 0;">
                 <div class="relative group">
                   <!-- Info Icon -->
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
@@ -168,21 +164,21 @@
             </div>
           </div>
 
-          <h2 class="text-2xl text-center font-bold mb-4 mt-6">Višak</h2>
+          <h2 class="text-2xl text-center font-bold mb-4 mt-6">Comparing file contains</h2>
           <div *ngFor="let difference of comparisonResult.differences">
-            <div *ngIf="difference.xlsx_text === '' && difference.pdf_text !== ''" class="flex w-full space-x-4 items-start">
+            <div *ngIf="difference.xlsx_text.trim() === '' && difference.pdf_text.trim() !== ''" class="flex w-full space-x-4 items-start">
               <!-- Left Column (xlsx_text) -->
               <div class="bg-green-100 text-green-900 p-4 rounded w-1/2 border border-green-300 mb-2">
-                <p class="whitespace-pre-wrap">{{ difference.xlsx_text }}</p>
+                <p class="whitespace-pre-wrap">{{ difference.xlsx_text.trim() }}</p>
               </div>
 
               <!-- Right Column (pdf_text) -->
               <div class="bg-red-100 text-red-900 p-4 rounded w-1/2 border border-red-300 mb-2">
-                <p class="whitespace-pre-wrap">{{ difference.pdf_text }}</p>
+                <p class="whitespace-pre-wrap">{{ difference.pdf_text.trim() }}</p>
               </div>
 
               <!-- Info Icon Column -->
-              <div class="flex items-center w-12 justify-center">
+              <div class="flex items-center w-12 justify-center" style="width: 0;">
                 <div class="relative group">
                   <!-- Info Icon -->
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
@@ -198,40 +194,36 @@
             </div>
           </div>
 
-          <div *ngIf="comparisonResult?.symbols_differences && comparisonResult.symbols_differences.length > 0 && !selectedXlsxFile">
-            <h2 class="text-2xl font-bold mb-4 mt-4">Symbols</h2>
-            <div *ngFor="let difference of comparisonResult.symbols_differences" class="flex w-full space-x-4 items-start">
-              <!-- Left Column (xlsx_text) -->
-              <div class="bg-green-100 text-green-900 p-4 rounded w-1/2 border border-green-300 mb-2">
-                <p class="whitespace-pre-wrap">{{ difference.xlsx_symbol }}</p>
-              </div>
+<!--          <div *ngIf="activeTab === 'pdfXlsx'">-->
+<!--            <h2 class="text-2xl font-bold mb-4 mt-4">Symbols</h2>-->
+<!--            <div *ngFor="let difference of comparisonResult.symbols_differences" class="flex w-full space-x-4 items-start">-->
 
-              <!-- Right Column (pdf_text) -->
-              <div class="bg-red-100 text-red-900 p-4 rounded w-1/2 border border-red-300 mb-2">
-                <p class="whitespace-pre-wrap">{{ difference.pdf_symbol }}</p>
-              </div>
+<!--              <img *ngIf="difference.encoded_image"-->
+<!--                   [src]="'data:image/png;base64,' + difference.encoded_image"-->
+<!--                   alt="Comparison visualization"-->
+<!--                   class="max-w-full rounded-lg shadow-md">-->
 
-              <!-- Info Icon Column -->
-              <div class="flex items-center w-12 justify-center">
-                <div class="relative group">
-                  <!-- Info Icon -->
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M18 10c0 4.418-3.582 8-8 8s-8-3.582-8-8 3.582-8 8-8 8 3.582 8 8zM9 7a1 1 0 102 0 1 1 0 00-2 0zm1 2a1 1 0 00-.993.883L9 10v4a1 1 0 001.993.117L11 14v-4a1 1 0 00-1-1z" clip-rule="evenodd" />
-                  </svg>
+<!--              &lt;!&ndash; Info Icon Column &ndash;&gt;-->
+<!--              <div class="flex items-center w-12 justify-center">-->
+<!--                <div class="relative group">-->
+<!--                  &lt;!&ndash; Info Icon &ndash;&gt;-->
+<!--                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">-->
+<!--                    <path fill-rule="evenodd" d="M18 10c0 4.418-3.582 8-8 8s-8-3.582-8-8 3.582-8 8-8 8 3.582 8 8zM9 7a1 1 0 102 0 1 1 0 00-2 0zm1 2a1 1 0 00-.993.883L9 10v4a1 1 0 001.993.117L11 14v-4a1 1 0 00-1-1z" clip-rule="evenodd" />-->
+<!--                  </svg>-->
 
-                  <!-- Tooltip -->
-                  <div class="absolute hidden group-hover:block bg-gray-700 text-white text-sm rounded px-3 py-2 w-64 z-10 shadow-lg">
-                    {{ difference.explanation }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+<!--                  &lt;!&ndash; Tooltip &ndash;&gt;-->
+<!--                  <div class="absolute hidden group-hover:block bg-gray-700 text-white text-sm rounded px-3 py-2 w-64 z-10 shadow-lg">-->
+<!--                    {{ difference.description }}-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
 
           <!-- Download Text Output Button -->
           <button (click)="generatePdf()"
                   [disabled]="!comparisonResult || !comparisonResult.differences.length"
-                  class="bg-blue-500 text-white px-6 py-3 rounded disabled:bg-gray-400">
+                  class="bg-blue-500 text-white px-6 py-3 rounded ml-auto mr-auto block disabled:bg-gray-400" style="margin-left: auto !important; margin-right: auto !important;">
             Download text output
           </button>
 

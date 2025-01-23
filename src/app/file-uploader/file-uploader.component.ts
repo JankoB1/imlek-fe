@@ -22,7 +22,7 @@ export class FileUploaderComponent {
   comparisonResult: {
     differences: { xlsx_text: string; pdf_text: string; explanation: string }[],
     encoded_image: string,
-    symbols_differences: { xlsx_symbol: string; pdf_symbol: string; explanation: string }[],
+    symbols_differences: { description: string; encoded_image: string; index: number }[],
   } = {
     differences: [],
     encoded_image: '',
@@ -125,7 +125,7 @@ export class FileUploaderComponent {
             headerRows: 1,
             widths: ['*', '*', '*'], // Flexible column widths
             body: [
-              ['XLSX Text', 'PDF Text', 'Explanation'], // Table headers
+              ['Referent Text', 'Comparing Text', 'Explanation'], // Table headers
               ...this.comparisonResult.differences.map((difference: any) => [
                 difference.xlsx_text,
                 difference.pdf_text,
