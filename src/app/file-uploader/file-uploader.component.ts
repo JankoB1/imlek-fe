@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { FileUploadService } from '../services/file-upload.service';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -20,13 +20,25 @@ export class FileUploaderComponent {
   selectedXlsxFile: File | null = null;
   selectedPdfFile2: File | null = null;
   comparisonResult: {
-    differences: { xlsx_text: string; pdf_text: string; explanation: string }[],
+    differences: {
+      xlsx_text: string;
+      pdf_text: string;
+      explanation: string;
+      referent_text: string;
+      to_compare_text: string;
+    }[],
     encoded_image: string,
-    symbols_differences: { description: string; encoded_image: string; index: number }[],
+    symbols_differences: {
+      additional_symbols: { symbol: string }[],
+      missing_symbols: { symbol: string }[]
+    },
   } = {
     differences: [],
     encoded_image: '',
-    symbols_differences: []
+    symbols_differences: {
+      additional_symbols: [],
+      missing_symbols: []
+    }
   };
   errorMessage: string = '';
   loading: boolean = false;
@@ -42,6 +54,22 @@ export class FileUploaderComponent {
       this.errorMessage = 'Please select a valid PDF file';
     }
   }
+
+  selectedDifferences: number[] = [];
+
+  toggleSelection(index: number) {
+    const selectedIndex = this.selectedDifferences.indexOf(index);
+    if (selectedIndex > -1) {
+      // Remove if already selected
+      this.selectedDifferences.splice(selectedIndex, 1);
+    } else {
+      // Add if not selected
+      this.selectedDifferences.push(index);
+    }
+
+    console.log(this.selectedDifferences);
+  }
+
 
   onXlsxFileSelected(event: any) {
     const file = event.target.files[0];
@@ -70,6 +98,7 @@ export class FileUploaderComponent {
         .subscribe({
           next: (result) => {
             this.comparisonResult = result;
+            this.selectedDifferences = this.comparisonResult.differences.map((_, index) => index);
             this.loading = false;
           },
           error: (error) => {
@@ -89,6 +118,8 @@ export class FileUploaderComponent {
         .subscribe({
           next: (result) => {
             this.comparisonResult = result;
+            console.log(this.comparisonResult);
+            this.selectedDifferences = this.comparisonResult.differences.map((_, index) => index);
             this.loading = false;
           },
           error: (error) => {
