@@ -104,7 +104,7 @@
       <div class="flex flex-col items-center space-y-4">
         <h2 class="text-2xl font-bold mb-4">Result</h2>
         <div *ngIf="activeTab !== 'twoPdfs'; else twoPdfs">
-          <div *ngIf="comparisonResult?.differences && comparisonResult.differences.length > 0">
+          <div *ngIf="comparisonResult?.differences && comparisonResult.differences.length > 0 && comparisonType === 'xlsx'">
             <h2 class="text-2xl text-center font-bold mb-4 mt-6">Differences</h2>
             <div *ngFor="let difference of comparisonResult.differences; let i = index">
               <div *ngIf="difference.xlsx_text.trim() !== '' && difference.pdf_text.trim() !== '' && difference.xlsx_text.trim() !== difference.pdf_text.trim()" class="flex w-full space-x-4 items-start">
@@ -274,7 +274,7 @@
         </div>
 
         <ng-template #twoPdfs>
-          <div *ngIf="comparisonResult?.differences && comparisonResult.differences.length > 0">
+          <div *ngIf="comparisonResult?.differences && comparisonResult.differences.length > 0 && comparisonType === 'pdf'">
             <h2 class="text-2xl text-center font-bold mb-4 mt-6">Differences</h2>
             <div *ngFor="let difference of comparisonResult.differences; let i = index">
               <div *ngIf="difference.referent_text.trim() !== '' && difference.to_compare_text.trim() !== '' && difference.referent_text.trim() !== difference.to_compare_text.trim()" class="flex w-full space-x-4 items-start">

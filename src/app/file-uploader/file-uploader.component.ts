@@ -16,6 +16,7 @@ pdfMake.vfs = pdfFonts.vfs;
 })
 export class FileUploaderComponent {
   activeTab: string = 'pdfXlsx';
+  comparisonType: string = '';
   selectedPdfFile: File | null = null;
   selectedXlsxFile: File | null = null;
   selectedPdfFile2: File | null = null;
@@ -99,6 +100,7 @@ export class FileUploaderComponent {
           next: (result) => {
             this.comparisonResult = result;
             this.selectedDifferences = this.comparisonResult.differences.map((_, index) => index);
+            this.comparisonType = 'xlsx';
             this.loading = false;
           },
           error: (error) => {
@@ -118,8 +120,8 @@ export class FileUploaderComponent {
         .subscribe({
           next: (result) => {
             this.comparisonResult = result;
-            console.log(this.comparisonResult);
             this.selectedDifferences = this.comparisonResult.differences.map((_, index) => index);
+            this.comparisonType = 'pdf';
             this.loading = false;
           },
           error: (error) => {
