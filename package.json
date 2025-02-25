@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --configuration development",
+    "start": "ng serve --configuration=development",
     "build": "ng b",
-    "watch": "ng build --watch --configuration development",
+    "watch": "ng build --watch --configuration=development",
     "test": "ng test",
     "serve:ssr:imlek-fe": "node dist/imlek-fe/server/server.mjs",
     "start:prod": "node dist/imlek-fe/server/server.mjs --host 0.0.0.0 --port 4000"
