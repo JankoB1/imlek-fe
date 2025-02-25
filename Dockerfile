@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:1
 
-ARG APP_ENV='development'
+ARG APP_ENV="development"
 
 FROM node:18-slim
 
