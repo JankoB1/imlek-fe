@@ -2,8 +2,8 @@
 
 FROM node:18-slim
 
-ARG NODE_ENV=development
-ENV NODE_ENV=$NODE_ENV
+ARG APP_ENV=development
+ENV APP_ENV=$APP_ENV
 
 WORKDIR /app
 
@@ -20,7 +20,7 @@ RUN npm install -g @angular/cli@17.3.1
 COPY . .
 
 # Build the application for production
-RUN npm run build -- --configuration $NODE_ENV
+RUN npm run build -- --configuration $APP_ENV
 
 # Expose port 4000
 EXPOSE 4000
