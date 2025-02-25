@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileUploadService {
-  private baseUrl = 'https://imlek-package-validator-billowing-pine-3420.fly.dev/api/v1'; // Adjust this to your FastAPI server URL
+  private baseUrl = environment.compareSvcUrl; // Adjust this to your FastAPI server URL
 
   constructor(private http: HttpClient) { }
 
