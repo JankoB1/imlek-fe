@@ -6,6 +6,8 @@ FROM node:18-slim
 
 WORKDIR /app
 
+RUN echo $APP_ENV
+
 # Copy package files first for better caching
 COPY package*.json ./
 
