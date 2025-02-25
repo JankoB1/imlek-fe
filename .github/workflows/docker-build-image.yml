@@ -16,7 +16,7 @@ jobs:
         id: dbuild
         with:
             build-args: |
-                APP_ENV=production
+                NODE_ENV=production
             push: false
             tags: imlek/package-validator-fe:${{ github.sha }}
       - run: docker save -o imlek-package-validator-fe-${{ github.sha }}.tar imlek/package-validator-fe:${{ github.sha }}

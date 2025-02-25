@@ -1,8 +1,9 @@
 # syntax = docker/dockerfile:1
 
-ARG APP_ENV=development
-
 FROM node:18-slim
+
+ARG NODE_ENV=development
+ENV NODE_ENV=$NODE_ENV
 
 WORKDIR /app
 
