@@ -7,8 +7,6 @@ ENV APP_ENV=$APP_ENV
 
 WORKDIR /app
 
-RUN echo $APP_ENV
-
 # Copy package files first for better caching
 COPY package*.json ./
 
