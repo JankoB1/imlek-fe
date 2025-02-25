@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:1
 
-ARG APP_ENV="development"
+ARG APP_ENV='development'
 
 FROM node:18-slim
 
@@ -17,7 +17,7 @@ RUN npm install -g @angular/cli@17.3.1
 COPY . .
 
 # Build the application for production
-RUN npm run build
+RUN npm run build -- --configuration ${APP_ENV}
 
 # Expose port 4000
 EXPOSE 4000
