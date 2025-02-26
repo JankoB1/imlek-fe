@@ -135,60 +135,71 @@ export class FileUploaderComponent {
   }
 
   generatePdf() {
-    // if (!this.comparisonResult || !this.comparisonResult.differences.length) {
-    //   return;
-    // }
+    if (!this.comparisonResult || !this.comparisonResult.differences.length) {
+      return;
+    }
 
-    // Define table body
-    const tableBody = [
-      ['XLSX Text', 'PDF Text', 'Explanation'], // Table header
-      ...this.comparisonResult.differences.map(difference => [
-        difference.xlsx_text,
-        difference.pdf_text,
-        difference.explanation
-      ])
-    ];
+    const selectedDifferencesData = this.comparisonResult.differences
+      .filter((_, index) => this.selectedDifferences.includes(index));
+
+    if (selectedDifferencesData.length === 0) {
+      return;
+    }
+
+    let tableBody = [];
+    if(this.comparisonType === 'xlsx') {
+      tableBody = [
+        ['Referent Text', 'Comparing Text', 'Explanation'],
+        ...selectedDifferencesData.map(difference => [
+          difference.xlsx_text,
+          difference.pdf_text,
+          difference.explanation
+        ])
+      ];
+    } else {
+      tableBody = [
+        ['Referent Text', 'Comparing Text', 'Explanation'],
+        ...selectedDifferencesData.map(difference => [
+          difference.referent_text,
+          difference.to_compare_text,
+          difference.explanation
+        ])
+      ];
+    }
+
 
     // Define PDF document structure
     const documentDefinition = {
       content: [
-        { text: 'Comparison Results', style: 'header' },
+        { text: 'Selected Comparison Results', style: 'header' },
         {
           table: {
             headerRows: 1,
-            widths: ['*', '*', '*'], // Flexible column widths
-            body: [
-              ['Referent Text', 'Comparing Text', 'Explanation'], // Table headers
-              ...this.comparisonResult.differences.map((difference: any) => [
-                difference.xlsx_text,
-                difference.pdf_text,
-                difference.explanation,
-              ]),
-            ],
+            widths: ['*', '*', '*'],
+            body: tableBody,
           },
         },
       ],
       styles: {
         header: {
           fontSize: 18,
-          margin: [0, 0, 0, 10], // Top, Right, Bottom, Left (4 elements)
+          margin: [0, 0, 0, 10],
         },
         subheader: {
           fontSize: 14,
           italics: true,
-          margin: [0, 10, 0, 5], // Top, Right, Bottom, Left (4 elements)
+          margin: [0, 10, 0, 5],
         },
         tableHeader: {
           bold: true,
           fontSize: 12,
           color: 'black',
-          margin: [5, 5, 5, 5], // Top, Right, Bottom, Left (4 elements)
+          margin: [5, 5, 5, 5],
         },
       },
     };
 
-    pdfMake.createPdf(documentDefinition as any).download('comparison_results.pdf');
-
-
+    pdfMake.createPdf(documentDefinition as any).download('selected_comparison_results.pdf');
   }
+
 }
